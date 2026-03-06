@@ -1,5 +1,7 @@
 # Demo — AUV Simulation Quick Start
 
+<video src="./example.mp4" controls width="100%"></video>
+
 ## Prerequisites
 
 - Ubuntu Linux (tested on 22.04)
@@ -85,3 +87,15 @@ bash start_all.sh
 ```
 
 This launches the full simulation pipeline including the simulator, OGM, and contour tracker.
+
+## Citation
+
+If you use any module from this repository, please cite the following paper:
+
+```bibtex
+@article{contour_tracking_heterogeneous_sonar,
+  title={Towards Robust Tracking of Unknown Contours: A Framework for AUV with Heterogeneous Sonar Configuration},
+}
+```
+
+> **Towards Robust Tracking of Unknown Contours: A Framework for AUV with Heterogeneous Sonar Configuration**
