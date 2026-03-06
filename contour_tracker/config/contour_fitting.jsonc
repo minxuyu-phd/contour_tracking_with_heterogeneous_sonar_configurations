@@ -1,0 +1,54 @@
+{
+  // 里程计订阅地址 (NNG Sub0)
+  "odometry_address": "tcp://192.168.5.11:5555",
+  // 轮廓服务请求地址 (NNG Req0)，查询以AUV为中心、contour_radius为半径的局部轮廓点
+  "contour_service_address": "tcp://192.168.5.11:5010",
+  // 轮廓查询半径 (m)，传给轮廓服务的 r 参数
+  "contour_radius": 50,
+  // 轮廓查询频率 (Hz)，实际查询间隔 = 1/query_hz 秒
+  "query_hz": 0.5,
+
+  // 极角去重阈值 (°)：相邻两点极角差小于此值时只保留距离更近的点
+  "angle_threshold_deg": 2.0,
+  // 极角排序方向：true=升序，false=降序
+  "sort_ascending": true,
+
+  // B样条拟合平滑因子，传给 splprep 的 s 参数，越大曲线越平滑
+  "bspline_smoothing": 5,
+  // B样条拟合输出的采样点数
+  "bspline_num_points": 100,
+
+  // 弧长均匀重采样间距 (m)，用于偏移曲线的均匀化；0表示不重采样
+  "resample_spacing": 2.0,
+  // 偏移曲线距原始拟合曲线的距离 (m)，即AUV与轮廓的期望跟踪距离
+  "d_ref": 15,
+
+  // 闭合环拐点平滑 — 转角阈值 (°)，相邻边夹角超过此值视为拐点
+  "kink_angle_thresh_deg": 30,
+  // 闭合环拐点平滑 — 高斯滤波标准差，越大平滑范围越广
+  "kink_smooth_sigma": 3.0,
+  // 闭合环拐点平滑 — 拐点向两侧扩展的点数，决定平滑邻域大小
+  "kink_smooth_window": 10,
+
+  // 轨迹输出点数：从偏移曲线上最近点开始取的点数
+  "trajectory_num_points": 12,
+
+  // 跟踪模式："R"=右侧跟踪(碰撞时左转规避)，"L"=左侧跟踪(碰撞时右转规避)
+  "tracking_mode": "R",
+  // 规避圆弧的最小转弯半径 (m)
+  "min_turn_radius": 12,
+  // 碰撞规避混合权重：规避轨迹占比，1.0=完全规避，0.0=完全跟踪
+  "collision_avoidance_weight": 0.5,
+  // 是否让可视化相机自动跟随AUV
+  "follow_auv": true,
+  // 闭合终点坐标 [x, y] (m)，AUV离开初始点后将以此点作为闭合判断目标
+  // 不设置或设为null时，使用AUV初始位置作为闭合点
+  // harbor01: [30.0, 185.0]
+  // harbor02: [10.0 -180.0]
+  // harbor03: [230.0 -180.0]
+  // island01: null
+  "closure_endpoint": null,
+
+  // 轨迹发布地址 (NNG Pub0)，空字符串表示不发布
+  "trajectory_publish_address": "tcp://192.168.5.11:6600"
+}

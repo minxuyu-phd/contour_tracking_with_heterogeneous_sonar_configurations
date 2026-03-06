@@ -1,0 +1,205 @@
+{
+  // ============================================================
+  // Depth Cruise Controller Configuration
+  // ============================================================
+  // All tunable parameters for depth_cruise_controller.py.
+  // Format: JSONC (JSON with // comments).
+  // ============================================================
+
+  // ------------------------------------------------------------
+  // Network addresses (NNG sockets)
+  // ------------------------------------------------------------
+  "network": {
+    "service_addr": "tcp://192.168.5.11:7780",
+    "odometry_addr": "tcp://192.168.5.11:5555",
+    "thruster1_addr": "tcp://192.168.5.11:6557",
+    "thruster2_addr": "tcp://192.168.5.11:6558",
+    "thrust_angle_addr": "tcp://192.168.5.11:6559",
+    "vbs_addr": "tcp://192.168.5.11:6555",
+    "lcg_addr": "tcp://192.168.5.11:6556"
+  },
+
+  // ------------------------------------------------------------
+  // Runtime options
+  // ------------------------------------------------------------
+  "runtime": {
+    // Control loop frequency (Hz)
+    "control_rate": 30.0,
+    // Enable CSV data logging
+    "enable_logging": false
+  },
+
+  // ------------------------------------------------------------
+  // Dive mode parameters
+  // ------------------------------------------------------------
+  "dive_mode": {
+    // Depth threshold to exit dive mode (m)
+    "depth_threshold": 2.0,
+    // Depth hysteresis band for mode switching (m)
+    "depth_hysteresis": 0.5,
+    // VBS during dive (%), negative buoyancy for sinking
+    "vbs_setpoint": 75.0,
+    // LCG during dive (%), rear position for nose-down
+    "lcg_setpoint": 70.0,
+    // Target pitch during dive (rad), ~-5.7 degrees
+    "pitch_target": -0.10,
+    // Target speed during dive (m/s), slow forward motion
+    "speed_target": 0.3
+  },
+
+  // ------------------------------------------------------------
+  // Cruise mode parameters
+  // ------------------------------------------------------------
+  "cruise_mode": {
+    // VBS at neutral buoyancy (%)
+    "vbs_neutral": 50.0,
+    // LCG at center position (%)
+    "lcg_center": 50.0
+  },
+
+  // ------------------------------------------------------------
+  // Actuator limits
+  // ------------------------------------------------------------
+  "actuator_limits": {
+    "rpm_min": -1000.0,
+    "rpm_max": 1000.0,
+    // Rudder limits (rad), physical limit ~0.436 rad（±25°）
+    "rudder_min": -0.43,
+    "rudder_max": 0.43,
+    "vbs_min": 0.0,      // percent
+    "vbs_max": 100.0,     // percent
+    "lcg_min": 0.0,       // percent
+    "lcg_max": 100.0,     // percent
+    "lcg_center": 50.0,   // percent (neutral)
+    // Thrust vector vertical angle limits (rad)
+    "elevator_min": -0.12,
+    "elevator_max": 0.12
+  },
+
+  // ------------------------------------------------------------
+  // Rate limits (per control cycle)
+  // ------------------------------------------------------------
+  "rate_limits": {
+    // Elevator rate limit (rad/cycle), at 20Hz = 1 rad/s max
+    "elevator": 0.05,
+    // Rudder rate limit (rad/cycle), at 30Hz = 0.3 rad/s max
+    "rudder": 0.01,
+    // Heading setpoint rate limit (rad/cycle), at 30Hz = 0.6 rad/s = 34 deg/s
+    "heading": 0.02
+  },
+
+  // ------------------------------------------------------------
+  // Sensor EMA low-pass filter (alpha: 0~1, 1.0 = no filter, smaller = stronger smoothing)
+  // ------------------------------------------------------------
+  "sensor_filter": {
+    "depth_alpha": 0.4,
+    "speed_alpha": 0.3,
+    "heading_alpha": 0.8,
+    "pitch_alpha": 0.5,
+    "roll_alpha": 0.6
+  },
+
+  // ------------------------------------------------------------
+  // PID controllers
+  // ------------------------------------------------------------
+  "pid_speed": {
+    "kp": 600.0,
+    "ki": 120.0,
+    "kd": 10.0,
+    "integral_max": 600.0
+  },
+
+  "pid_heading": {
+    "kp": 1.0,
+    "ki": 0.1,
+    "kd": 0.2,
+    "integral_max": 0.5
+  },
+
+  // Depth PID (cruise mode) - outputs target pitch angle
+  "pid_depth_pitch": {
+    "kp": 0.10,
+    "ki": 0.015,
+    "kd": 0.30,
+    "integral_max": 0.06
+  },
+
+  // Pitch PID (inner loop for cruise mode) - outputs elevator angle
+  "pid_pitch": {
+    "kp": 0.75,
+    "ki": 0.12,
+    "kd": 0.32,
+    "integral_max": 0.35
+  },
+
+  // Roll stabilization via differential thrust
+  "pid_roll": {
+    "enabled": true,
+    "kp": 50.0,        // RPM per radian of roll error
+    "ki": 0.0,         // disabled to prevent accumulation
+    "kd": 30.0,
+    "integral_max": 20.0,
+    "diff_max": 80.0,  // max differential RPM
+    "deadzone": 0.02   // rad (~1.1 deg), no correction within deadzone
+  },
+
+  // ------------------------------------------------------------
+  // Pitch limits (rad)
+  // ------------------------------------------------------------
+  "pitch_limits": {
+    // During descent (~20 degrees)
+    "descent": 0.35,
+    // Reduced limit to limit overshoot (~6 degrees)
+    "steady": 0.10,
+    // Current active limit (dynamic, initial value)
+    "default": 0.35
+  },
+
+  // ------------------------------------------------------------
+  // Depth steady-state thresholds (m)
+  // ------------------------------------------------------------
+  "depth_steady": {
+    // Switch to steady-state when depth error < threshold
+    "threshold": 0.5,
+    // Hysteresis band for switching back
+    "hysteresis": 1.0
+  },
+
+  // ------------------------------------------------------------
+  // Pitch feedforward (rad per m/s of speed)
+  // ------------------------------------------------------------
+  "pitch_feedforward": {
+    "per_speed_descent": -0.08,
+    "per_speed_steady": -0.08,
+    // Current active value (dynamic, initial value)
+    "per_speed_default": -0.08
+  },
+
+  // ------------------------------------------------------------
+  // Sensor sanity check limits (effectively disabled)
+  // ------------------------------------------------------------
+  "sensor_limits": {
+    "depth_max": 10000.0,       // meters
+    "speed_max": 1000.0,        // m/s
+    "rate_max_depth": 1000.0,   // m/s
+    "rate_max_speed": 10000.0   // m/s^2
+  },
+
+  // ------------------------------------------------------------
+  // Safety: crash prevention
+  // ------------------------------------------------------------
+  "safety": {
+    // Lateral velocity threshold (m/s), stable turning ~0.27
+    "dangerous_vel_y_threshold": 1.0,
+    // Roll rate threshold (rad/s, ~29 deg/s)
+    "dangerous_roll_rate_threshold": 0.5,
+    // Reduce rudder to this factor when in dangerous state
+    "dangerous_state_control_factor": 0.3
+  },
+
+  // ------------------------------------------------------------
+  // LCG pitch ratio (0-1)
+  // How much LCG assists pitch control
+  // ------------------------------------------------------------
+  "lcg_pitch_ratio": 0.3
+}

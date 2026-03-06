@@ -1,0 +1,38 @@
+{
+  "cell_size": 0.2,
+  "sensors": {
+    "odometry":   { "address": "tcp://192.168.5.11:5555" },
+    "msis":       { "address": "tcp://192.168.5.11:5560", "confidence": 0.8, "aperture": 2.0, "bin_threshold": 80, "free_weight": 0.1 },
+    "sbes_left":  { "address": "tcp://192.168.5.11:5561", "confidence": 0.40, "beam_angle": -75.0, "aperture": 25.0, "free_weight": 0.2 },
+    "sbes_right": { "address": "tcp://192.168.5.11:5562", "confidence": 0.40, "beam_angle": 75.0, "aperture": 25.0, "free_weight": 0.2 }
+  },
+  "service": {
+    "address": "tcp://192.168.5.11:5010",
+    "contour_threshold": 0.65,
+    "angular_merge_threshold_deg": 1.0,
+    "outlier_window_size": 5,
+    "outlier_factor": 3.0,
+    "ransac_max_distance": 0.5,
+    "ransac_n_iterations": 50,
+    "ransac_window_size": 8,
+    "ransac_vote_threshold": 0.5
+  },
+  "visualization": {
+    "enabled": true,
+    "window_width": 1024,
+    "window_height": 768,
+    "fps": 30,
+    "camera_x": -120.0,
+    "camera_y": 0.0,
+    "render_threshold": 0.0,
+    "grid_opacity": 0.7,
+    "follow_auv": true
+  },
+  "pruning": {
+    "enabled": true,
+    "keep_radius": 80.0,
+    "interval": 5.0,
+    "min_move": 10.0,
+    "log_interval": 3
+  }
+}

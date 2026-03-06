@@ -1,0 +1,13 @@
+{
+    // 传感器数据订阅地址（与 config.jsonc 中 network.sensors 一致）
+    "sensors": {
+        "odometry": "tcp://192.168.5.11:5555",
+        "pressure": "tcp://192.168.5.11:5556",
+        "dvl": "tcp://192.168.5.11:5557",
+        "imu": "tcp://192.168.5.11:5558",
+        "gps": "tcp://192.168.5.11:5559",
+        "msis": "tcp://192.168.5.11:5560",
+        "echosounder_left": "tcp://192.168.5.11:5561",
+        "echosounder_right": "tcp://192.168.5.11:5562"
+    }
+}

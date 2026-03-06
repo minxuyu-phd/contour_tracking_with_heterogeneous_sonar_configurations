@@ -1,0 +1,15 @@
+{
+    // 执行器控制地址（Publisher listen，仿真器 Subscriber dial 过来）
+    // 与 config.jsonc 中 network.actuators 一致
+    "actuators": {
+        "thruster1": "tcp://192.168.5.11:6557",
+        "thruster2": "tcp://192.168.5.11:6558",
+        "vbs": "tcp://192.168.5.11:6555",
+        "lcg": "tcp://192.168.5.11:6556",
+        "thrust_angle": "tcp://192.168.5.11:6559"
+    },
+    // 配置服务地址（Requester dial → 仿真器 Replier listen）
+    "services": {
+        "config_server": "tcp://192.168.5.11:7777"
+    }
+}

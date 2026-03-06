@@ -1,0 +1,6 @@
+{
+  // 里程计订阅地址 (NNG Sub0)
+  "odometry_address": "tcp://192.168.5.11:5555",
+  // 轨迹订阅地址 (NNG Sub0)，来自 contour_fitting.py 的轨迹发布
+  "trajectory_address": "tcp://192.168.5.11:6600"
+}

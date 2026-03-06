@@ -1,0 +1,15 @@
+{
+    // 遥控参数
+    "teleop": {
+        "max_rpm": 600,           // 最大推进器转速 (RPM)
+        "max_angle_rad": 0.43,    // 最大舵角 (弧度)，约 24.6°
+        "loop_hz": 10             // 主控循环频率 (Hz)
+    },
+    "network": {
+        // teleop Publisher 监听地址；仿真器 Subscriber 从此拨入
+        // 注意：IP 应为运行 teleop.py 的机器地址
+        "thruster1":   "tcp://192.168.5.11:6557",
+        "thruster2":   "tcp://192.168.5.11:6558",
+        "thrust_angle":"tcp://192.168.5.11:6559"
+    }
+}

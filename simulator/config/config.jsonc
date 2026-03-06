@@ -1,0 +1,54 @@
+{
+    "simulation": {
+        // 仿真物理步进频率 (Hz)，越高精度越好但 CPU 负担越大
+        "rate_hz": 300
+    },
+    "graphics": {
+        "resolution": [1200, 800],     // [宽, 高] 窗口分辨率（像素）
+        "quality": "medium",           // 渲染质量: "low" / "medium" / "high"
+        "vsync": true,                 // 垂直同步，开启可避免画面撕裂
+        "follow_auv": true,            // 相机是否自动跟随 AUV
+
+        // Stonefish 调试辅助显示开关
+        "helper_settings": {
+            "show_coord_sys": false,              // 坐标系可视化
+            "show_joints": false,                 // 关节连接点
+            "show_actuators": false,              // 执行器位置与方向
+            "show_sensors": true,                 // 传感器位置与范围
+            "show_fluid_dynamics": false,          // 流体动力学可视化
+            "show_ocean_velocity_field": false,    // 海洋速度场
+            "show_forces": false,                  // 受力向量
+            "show_bullet_debug_info": false        // Bullet 物理引擎碰撞调试
+        }
+    },
+    "environment": {
+        "scene_file": "scenarios/single_auv.scn"   // Stonefish 场景定义文件
+    },
+    "network": {
+        // 传感器数据发布地址 (simulator -> controller)
+        // 端口分配: 555x 段
+        "sensors": {
+            "odometry": "tcp://192.168.5.11:5555",
+            "pressure": "tcp://192.168.5.11:5556",
+            "dvl": "tcp://192.168.5.11:5557",
+            "imu": "tcp://192.168.5.11:5558",
+            "gps": "tcp://192.168.5.11:5559",
+            "msis": "tcp://192.168.5.11:5560",
+            "echosounder_left": "tcp://192.168.5.11:5561",
+            "echosounder_right": "tcp://192.168.5.11:5562"
+        },
+        // 执行器指令订阅地址 (controller -> simulator)
+        // 端口分配: 655x 段
+        "actuators": {
+            "vbs_command": "tcp://192.168.5.11:6555",        // 可变浮力系统
+            "lcg_command": "tcp://192.168.5.11:6556",        // 纵向重心调节
+            "thruster1_command": "tcp://192.168.5.11:6557",  // 推进器 1
+            "thruster2_command": "tcp://192.168.5.11:6558",  // 推进器 2
+            "thrust_angle_command": "tcp://192.168.5.11:6559" // 推进器角度
+        },
+        // 服务端口
+        "services": {
+            "config_server": "tcp://192.168.5.11:7777"  // 配置查询服务 (REP/REQ)
+        }
+    }
+}
